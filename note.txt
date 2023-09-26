@@ -1,0 +1,5 @@
+1. npm install --save-exact express@4.17.2 dotenv@10.0.0 body-parser@1.19.1 ejs@3.1.6
+
+(file babelrc để cấu hình 1 trình dịch code. bởi vì javascript có nhìu version khác nhau do đó cần một trình compiler)
+
+2. npm install --save-exact @babel/core@7.15.4 @babel/node@7.15.4 @ babel/preset-env@7.15.4 nodemon@2.0.15
