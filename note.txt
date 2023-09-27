@@ -2,4 +2,22 @@
 
 (file babelrc để cấu hình 1 trình dịch code. bởi vì javascript có nhìu version khác nhau do đó cần một trình compiler)
 
-2. npm install --save-exact @babel/core@7.15.4 @babel/node@7.15.4 @ babel/preset-env@7.15.4 nodemon@2.0.15
+2. npm install --save-exact @babel/core@7.15.4 @babel/node@7.15.4 @babel/preset-env@7.15.4 nodemon@2.0.15
+
+3. npm install --save-exact mysql2@2.3.3
+
+4. npm install --save-exact bcryptjs@2.4.3
+
+(bcrypt dùng để mã hóa password)
+
+5. npm install --save-exact bluebird@3.7.2
+
+(bluebird package tránh bất đồng bộ)
+
+6. npm install --save-exact sequelize@6.13.0 sequelize-cli@6.3.0
+
+(ORM is Object relation model)
+
+(sequelizerc dung để config hướng dẫn thư viện cần phải làm gì)
+
+(run: (node_modules/.bin/sequelize init) để khởi tạo)
