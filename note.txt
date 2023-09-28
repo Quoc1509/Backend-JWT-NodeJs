@@ -16,7 +16,7 @@
 
 6. npm install --save-exact sequelize@6.13.0 sequelize-cli@6.3.0
 
-(ORM is Object relation model)
+(ORM is Object relational mapping)
 
 (sequelizerc dung để config hướng dẫn thư viện cần phải làm gì)
 
