@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import mysql from 'mysql2/promise'
 import bluebird from 'bluebird'
-
+import db from '../models/index'
 
 
 
@@ -20,62 +20,67 @@ const hashPassword = (userPassword) => {
 const createNewUser = async (email, password, username) => {
     let hashUserPassword = hashPassword(password)
 
-    const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        database: 'jwt-nodejs',
-        Promise: bluebird
-    })
+    // const connection = await mysql.createConnection({
+    //     host: 'localhost',
+    //     user: 'root',
+    //     database: 'jwt-nodejs',
+    //     Promise: bluebird
+    // })
 
-    await connection.execute(`INSERT INTO users (email, password, username) VALUES (?, ?, ?)`, [email, hashUserPassword, username])
-    // connection.query(
-    //     `INSERT INTO users (email, password, username) VALUES (?, ?, ?)`, [email, hashUserPassword, username],
-    //     function(err, results, fields){
-    //         console.log(err)
-    //     }
-    // )
+    // await connection.execute(`INSERT INTO user (email, password, username) VALUES (?, ?, ?)`, [email, hashUserPassword, username])\
+    try{
+        await db.User.create({
+            email: email,
+            password: hashUserPassword,
+            username: username
+        })
+    }catch(e){
+        console.log('createNewUser: ', e)
+    }
+    
 }
 
 const getUserList = async () => {
-    const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        database: 'jwt-nodejs',
-        Promise: bluebird
-    })
-    // let user = []
-    // return connection.query(
-    //     'SELECT * FROM users',
-    //     function(err, results, fields){
-    //         if(err) {
-    //             console.log(err)
-    //             return user
-    //         }
-    //         else{
-    //             user = results
-    //             return user     
-    //         }
-            
-    //     }
-    // )
+    // const connection = await mysql.createConnection({
+    //     host: 'localhost',
+    //     user: 'root',
+    //     database: 'jwt-nodejs',
+    //     Promise: bluebird
+    // })
 
-    try{
-        const [rows, feilds] = await connection.execute('Select * from users')
-        return rows
+    // try{
+    //     const [rows, feilds] = await connection.execute('Select * from user')
+    //     return rows
+    // }catch(e){
+    //     console.log('getUserList: ', e)
+    // }
+    let users = []
+    try{    
+        users = await db.User.findAll()
     }catch(e){
         console.log('getUserList: ', e)
     }
+    return users
 }
 
 const deleteUser = async (id) => {
-    const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        database: 'jwt-nodejs',
-        Promise: bluebird
-    })
+    // const connection = await mysql.createConnection({
+    //     host: 'localhost',
+    //     user: 'root',
+    //     database: 'jwt-nodejs',
+    //     Promise: bluebird
+    // })
+    // try{
+    //     await connection.execute('Delete from user where id=?', [id])
+    // }catch(e){
+    //     console.log('deleteUser: ', e)
+    // }
     try{
-        await connection.execute('Delete from users where id=?', [id])
+        await db.User.destroy({
+            where: {
+                id: id
+            }
+        })
     }catch(e){
         console.log('deleteUser: ', e)
     }
@@ -83,32 +88,53 @@ const deleteUser = async (id) => {
 }
 
 const getUserById = async (id) => {
-    const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        database: 'jwt-nodejs',
-        Promise: bluebird
-    })
+    // const connection = await mysql.createConnection({
+    //     host: 'localhost',
+    //     user: 'root',
+    //     database: 'jwt-nodejs',
+    //     Promise: bluebird
+    // })
+    // try{
+    //     const [rows, feilds] = await connection.execute('Select * from user where id=?', [id])
+    //     return rows
+    // }catch(e){
+    //     console.log('deleteUser: ', e)
+    // }
+    let user = {}
     try{
-        const [rows, feilds] = await connection.execute('Select * from users where id=?', [id])
-        return rows
+        user = await db.User.findOne({
+            where: {
+                id: id
+            }
+        })
+        
     }catch(e){
-        console.log('deleteUser: ', e)
+        console.log('getUserById: ', e)
     }
+    return user.get({plain: true})
 }
 
 let updateUserInfor = async (email, username, id) => {
-    const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        database: 'jwt-nodejs',
-        Promise: bluebird
-    })
+    // const connection = await mysql.createConnection({
+    //     host: 'localhost',
+    //     user: 'root',
+    //     database: 'jwt-nodejs',
+    //     Promise: bluebird
+    // })
+    // try{
+    //     const [rows, feilds] = await connection.execute('Update user set email=?, username=? where id=?', [email, username, id])
+    //     return rows
+    // }catch(e){
+    //     console.log('deleteUser: ', e)
+    // }
+
     try{
-        const [rows, feilds] = await connection.execute('Update users set email=?, username=? where id=?', [email, username, id])
-        return rows
+        await db.User.update(
+            {email: email, username: username},
+            {where: {id: id}}
+        )
     }catch(e){
-        console.log('deleteUser: ', e)
+        console.log('updateUserInfor: ', e)
     }
 }
 

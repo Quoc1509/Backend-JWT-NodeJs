@@ -1,13 +1,16 @@
 'use strict';
+require("dotenv").config();
 
-const fs = require('fs');
-const path = require('path');
-const Sequelize = require('sequelize');
-const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../../config/config.json')[env];
+const fs = require('fs'); //thư viện fs dùng để đọc, ghi file
+const path = require('path'); //thư viện đường dẫn đến file
+const Sequelize = require('sequelize'); 
+const basename = path.basename(__filename); //lay file name
+const env = process.env.NODE_ENV || 'development'; //chọn môi trường
+const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
+
+// tạo sequelize (kết nối database)
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
